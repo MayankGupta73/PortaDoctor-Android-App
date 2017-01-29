@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
     EditText etSearch;
     TextView tvList;
-    Button btnGo,btnSearch;
+    Button btnGo,btnSearch,btnClear;
     ArrayList<String> symptomList = new ArrayList<>();
 
     @Override
@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
         btnGo = (Button) findViewById(R.id.btnGo);
         btnSearch = (Button) findViewById(R.id.btnSearch);
+        btnClear = (Button) findViewById(R.id.btnClear);
         tvList = (TextView) findViewById(R.id.tvList);
         etSearch = (EditText) findViewById(R.id.etSearch);
 
@@ -36,6 +37,14 @@ public class MainActivity extends AppCompatActivity {
                 query = query.toLowerCase().trim();
                 tvList.append("- "+query+"\n");
                 symptomList.add(query);
+            }
+        });
+
+        btnClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                symptomList.clear();
+                tvList.setText("");
             }
         });
 
