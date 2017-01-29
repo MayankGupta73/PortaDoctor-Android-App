@@ -20,7 +20,8 @@ public class SymptomActivity extends AppCompatActivity {
     TextView tvResult;
     Button btnOnline;
     ArrayList<Symptom> symptomArrayList = new ArrayList<>();
-    SymptomRecycler symptomRecycler = new SymptomRecycler(this,symptomArrayList);
+    ArrayList<Symptom> tempList = new ArrayList<>();
+    SymptomRecycler symptomRecycler = new SymptomRecycler(this,tempList);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +45,6 @@ public class SymptomActivity extends AppCompatActivity {
         Intent i = getIntent();
         symptoms = i.getStringArrayListExtra("symptoms");
 
-        tvResult.setText("Found "+symptomArrayList.size()+" results.");
         btnOnline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,7 +59,28 @@ public class SymptomActivity extends AppCompatActivity {
             }
         });
 
-        // TODO: search list and send the correct ArrayList to the recycler.
+
+        if(!symptoms.get(0).equals("all")) {
+            for (int n = 0; n < symptomArrayList.size(); n++) {
+                ArrayList<String> temp = symptomArrayList.get(n).getSymptoms();
+                boolean remove = false;
+                for(int m=0; m<symptoms.size();m++){
+                    if(!temp.contains(symptoms.get(m))){
+                        remove = true;
+                        break;
+                    }
+                }
+                if(remove == false){
+                    tempList.add(symptomArrayList.get(n));
+                }
+            }
+        }
+        else {
+            for(Symptom symp : symptomArrayList){
+                tempList.add(symp);
+            }
+        }
+        tvResult.setText("Found "+tempList.size()+" results.");
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(symptomRecycler);
